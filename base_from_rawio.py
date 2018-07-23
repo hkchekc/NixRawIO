@@ -1,5 +1,5 @@
 
-from neo.io.basefromrawio import BaseFromRaw
+from basefromrawio import BaseFromRaw
 from NixRawIO import NixRawIO
 import nixio as nix
 import numpy as np

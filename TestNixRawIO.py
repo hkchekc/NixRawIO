@@ -11,8 +11,8 @@ reader.__init__('neoraw.nix')
 reader.parse_header()
 
 r = reader.get_analogsignal_chunk(0,1,None,None,[9])
-print(r)
-r = reader.get_analogsignal_chunk(0,0,None,None,[8])
+print(reader.raw_annotations['blocks'][0]['segments'][0]['signals'])
+print(reader.source_name())
 print(r)
 print("====================================================")
 

@@ -1,5 +1,5 @@
 from __future__ import print_function, division, absolute_import
-from neo.rawio.baserawio import (BaseRawIO, _signal_channel_dtype, _unit_channel_dtype, _event_channel_dtype)
+from baserawio import (BaseRawIO, _signal_channel_dtype, _unit_channel_dtype, _event_channel_dtype)
 import numpy as np
 import nixio as nix
 
@@ -29,6 +29,7 @@ class NixRawIO (BaseRawIO):
         blsig_count = 0
         for i, bl in enumerate(self.file.blocks):
             sig_in_blk = []
+            block_index = i
             for seg in bl.groups:
                 for da in seg.data_arrays:
                     if da.type == "neo.analogsignal":
@@ -214,8 +215,6 @@ class NixRawIO (BaseRawIO):
 
         nb_chan = np.unique(self.header['signal_channels'][channel_indexes]['group_id'])
 
-
-        # delete the line above if channel_index is ChannelIndex instead of header
         same_group = []
         for idx, ch in enumerate(self.header['signal_channels']):
             if self.header['signal_channels'][idx]['group_id'] == nb_chan:
@@ -235,7 +234,6 @@ class NixRawIO (BaseRawIO):
                 print("There is no channel index: {}".format(channel_indexes))
                 continue
         for i, da in enumerate(self.file.blocks[block_index].groups[seg_index].data_arrays):
-            #print((da.sources[0].name if da.sources else print("abc")))
             if i in channel_indexes:
                 if da.type == 'neo.analogsignal' :
                     if da.sources[0].name == chan_name:
@@ -247,12 +245,9 @@ class NixRawIO (BaseRawIO):
                         raw_signals_list.append(da[i_start:i_stop])
 
         #raw_signals_list = [raw_signals_list[i] for i in id_in_group]
-        # returning in a strange nested form, may cause problem
         raw_signals = np.array(raw_signals_list)
         raw_signals = np.transpose(raw_signals)
-        print(raw_signals.shape)
         if raw_signals.size == 0:
-            print("abc")
             raw_signals = np.zeros(shape=(5,5))
         return raw_signals
 
