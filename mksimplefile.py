@@ -39,8 +39,8 @@ for block in (block1, block2):
 
 
         asig = AnalogSignal(name="Seg {} :: Data {}".format(idx, 0),
-                            signal=data_a+idx, units="V",
-                            sampling_rate=sampling_rate)
+                            signal=data_a+1, units="V",
+                            sampling_rate=sampling_rate, t_start=1* pq.s)
         print("Seg {} :: Data {}".format(idx, 0))
         seg.analogsignals.append(asig)
         # random sampling times for data_b
@@ -73,7 +73,7 @@ for block in (block1, block2):
 
 # Write the Block to file using the NixIO
 # Any existing file will be overwritten
-fname = "neoraw.nix"
+fname = "test_case.nix"
 io = NixIO(fname, "ow")
 io.write_block(block1)
 io.write_block(block2)

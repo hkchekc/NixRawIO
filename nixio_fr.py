@@ -1,8 +1,8 @@
-from nixrawio import NixRawIO
+from nixrawio import NIXRawIO
 from neo.io.basefromrawio import BaseFromRaw
 
 
-class NixIOfr(NixRawIO, BaseFromRaw):
+class NixIOfr(NIXRawIO, BaseFromRaw):
 
     name = 'NIX IO'
 
@@ -10,7 +10,7 @@ class NixIOfr(NixRawIO, BaseFromRaw):
     _prefered_units_group_mode = 'split-all'
 
     def __init__(self, filename):
-        NixRawIO.__init__(self, filename)
+        NIXRawIO.__init__(self, filename)
         BaseFromRaw.__init__(self, filename)
 
     def __enter__(self):

@@ -7,8 +7,6 @@ from neo.io.nixio import NixIO
 import numpy as np
 import quantities as pq
 
-
-
 block1 = Block("nix-raw-block1", description="The 1st block")
 block2 = Block("nix-raw-block2", description="The 2nd block")
 
@@ -64,10 +62,10 @@ for block in (block1, block2):
         itimes = np.cumsum(np.random.random(1200))
 
         # Create one AnalogSignal and one IrregularlySampledSignal
-        isig = IrregularlySampledSignal(name="Sampled data", signal=irsigdata,
-                                        units="nA",
-                                        times=itimes, time_units="ms")
-        seg.irregularlysampledsignals.append(isig)
+        # isig = IrregularlySampledSignal(name="Sampled data", signal=irsigdata,
+        #                                 units="nA",
+        #                                 times=itimes, time_units="ms")
+        # seg.irregularlysampledsignals.append(isig)
 
         # Event, Epoch, SpikeTrain
         tstart = 10 * pq.ms
@@ -80,7 +78,7 @@ for block in (block1, block2):
         epoch_times = tstart + np.cumsum(np.random.random(3)) * pq.ms
         epoch = Epoch(name="Seg {} :: Epoch".format(idx),
                       times=epoch_times,
-                      durations=np.random.random(4)*pq.ms,
+                      durations=np.random.random(3)*pq.ms,
                       labels=["A+", "B+", "C+"])
         seg.epochs.append(epoch)
 
@@ -89,7 +87,8 @@ for block in (block1, block2):
         st = SpikeTrain(name="Seg {} :: SpikeTrain".format(idx),
                         times=st_times, t_start=tstart, t_stop=tstop)
         st.sampling_rate = sampling_rate
-
+        wf = np.random.random((len(st_times), nchannels, 30)) * pq.mV
+        st.waveforms = wf
         seg.spiketrains.append(st)
 
         unit = Unit(name="unit-{}".format(idx))
@@ -98,7 +97,7 @@ for block in (block1, block2):
 
 # Write the Block to file using the NixIO
 # Any existing file will be overwritten
-fname = "neoraw.nix"
+fname = "test_case.nix"
 io = NixIO(fname, "ow")
 io.write_block(block1)
 io.write_block(block2)
